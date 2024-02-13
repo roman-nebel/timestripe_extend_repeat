@@ -1,24 +1,68 @@
 .RecurrenceItem {
   display: flex;
   flex-direction: column;
-  gap: 4px;
 }
 
-.RecurrenceItem-selected > button {
+.RecurrenceItem._selected > button {
   background-color: transparent !important;
   cursor: default;
 }
 
-.RecurrenceItem-selected:not(.RecurrenceItem-simple) {
-  padding-bottom: 4px;
+.RecurrenceItem._selected:not(.RecurrenceItem-simple) {
+  padding-bottom: 8px;
   border-top: 1px solid #fff3;
   border-bottom: 1px solid #fff3;
 }
 
-.RecurrenceItem-selected:first-child {
+.RecurrenceItem._selected:first-child {
   border-top: none;
 }
 
-.RecurrenceItem-selected:last-child {
+.RecurrenceItem._selected:last-child {
   border-bottom: none;
+}
+
+.RecurrenceSettings {
+  padding-left: 14px;
+  padding-right: 12px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.RecurrenceSelectorList {
+  padding: 2px 0;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.RecurrenceSelector-button {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.RecurrenceSelector-button._small {
+  width: 25px;
+}
+
+.RecurrenceSelector-button._large {
+  width: 47px;
+}
+
+.RecurrenceSelector-button._active {
+  background: #f0e995;
+  border-color: #f0e995;
+  color: var(--inversed_color);
+  opacity: 1;
+}
+
+.Recurrence-text_secondary {
+  font-size: 14px;
+  line-height: 19px;
+
+  color: #616161;
 }

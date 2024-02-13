@@ -12,6 +12,42 @@ function SelectorButton({label, width}) {
   )
 }
 
+function ItemCounter({value, initCounter = 1}) {
+  const [counter, setCounter] = useState(initCounter)
+  let itemName = ""
+  if (value === "daily") {
+    itemName = "day"
+  }
+  if (value === "weekly") {
+    itemName = "week"
+  }
+  if (value === "monthly") {
+    itemName = "month"
+  }
+  if (counter > 1) {
+    itemName += "s"
+  }
+
+  function changeHandler(event) {
+    setCounter(event.target.value)
+  }
+
+  function blurHandler(event) {
+    const num = Number(event.target.value)
+    if (num < 1) setCounter(1)
+    else if (num > 9) setCounter(9)
+    else setCounter(num)
+  }
+
+  return(
+    <div className="RecurrenceSettings CounterSettings">
+      <span className="Recurrence-text_secondary">Repeat every</span>
+      <input type="number" min={1} max={9} maxLength={1} className="DurationPicker-input RecurrenceInput" placeholder="0" value={counter} onChange={changeHandler} onBlur={blurHandler} />
+      <span className="Recurrence-text_secondary">{itemName}</span>
+    </div>
+  )
+}
+
 function DaysSelector() {
   const days = ["M", "T", "W", "T", "F", "S", "S"]
   return(
@@ -43,7 +79,7 @@ function MonthsSelector() {
 function ReccurentExpand({type, value}) {
   switch (type) {
     case "counter":
-      return <>Counter</>
+      return <ItemCounter value={value} />
     case "selector":
       if (value === "weekdays") {
         return <DaysSelector />
@@ -73,6 +109,22 @@ export function DropdownButton({type, label, value, selected, onSelect}) {
           </svg>}
       </button>
       {selected && <ReccurentExpand type={type} value={value} />}
+    </div>
+  )
+}
+
+export function DropdownSubfolder({label}) {
+  return(
+    <div className={`RecurrenceItem-simple`}>
+      <button 
+        type="button" 
+        role="option" 
+        onClick={() => {}} 
+        className="DropdownButton _size_default"
+      >
+        {label}
+        <svg class="Icon Dropdown-sub_menu_open_button-arrow TriangleArrowIcon" viewBox="0 -2 23 23" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{transform: "rotate(90deg)"}}><path d="M7.43408 14.6748L12.4341 9.67481L17.4341 14.6748" stroke="currentColor" stroke-width="1.8"></path></svg>
+      </button>
     </div>
   )
 }

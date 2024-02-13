@@ -28,7 +28,13 @@
 
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
+}
+
+.CounterSettings {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
 }
 
 .RecurrenceSelectorList {
@@ -37,9 +43,11 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 4px;
+  row-gap: 4px;
 }
 
-.RecurrenceSelector-button {
+.DurationPicker-button.RecurrenceSelector-button {
+  margin-top: 0;
   display: flex;
   justify-content: center;
   flex-grow: 1;
@@ -60,9 +68,27 @@
   opacity: 1;
 }
 
+.DurationPicker-input.RecurrenceInput {
+  width: 29px;
+  height: 25px;
+  
+  font-size: 14px;
+  font-weight: 400;
+}
+
 .Recurrence-text_secondary {
   font-size: 14px;
   line-height: 19px;
 
   color: #616161;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }

@@ -1,5 +1,6 @@
+import "./Modal.css"
 import { useState } from "react";
-import { DropdownButton } from "../Button/Button"
+import { DropdownButton, DropdownSubfolder } from "../Button/Button"
 
 function RecurrencePicker({checkedValue = "off"}) {
   const [selectedItem, setSelectedItem] = useState(checkedValue);
@@ -64,11 +65,10 @@ function RecurrencePicker({checkedValue = "off"}) {
       <hr></hr>
       {selectedItem !== "off" && 
         <>
-          <DropdownButton
+          <DropdownSubfolder
             key={0}
             type={"simple"}
             label={"End repeat"}
-            onSelect={() => {}}
           />
           <hr></hr>
         </>
@@ -87,7 +87,7 @@ function RecurrencePicker({checkedValue = "off"}) {
 
 export default function Modal({}) {
   return(
-    <div className="theme_dark ContextMenu Dropdown Dropdown-menu _open" data-popper-reference-hidden="false" data-popper-escaped="false" data-popper-placement="right-start">
+    <div className="theme_dark ContextMenu Dropdown Dropdown-menu Recurrence-menu _open" data-popper-reference-hidden="false" data-popper-escaped="false" data-popper-placement="right-start">
       <RecurrencePicker />
     </div>
   )

@@ -1,8 +1,8 @@
 import "./Button.css"
 import { useState } from "react";
 
-function SelectorButton({label, width}) {
-  const [state, updateState] = useState(false)
+function SelectorButton({label, width, selected}) {
+  const [state, updateState] = useState(selected)
 
   function clickHandler() {
     updateState(!state)
@@ -48,51 +48,54 @@ function ItemCounter({value, initCounter = 1}) {
   )
 }
 
-function DaysSelector() {
+function DaysSelector({rule}) {
+  console.log(rule)
+  const [mask, changeMask] = useState(rule)
   const days = ["M", "T", "W", "T", "F", "S", "S"]
   return(
     <div className="RecurrenceSettings">
       <span className="Recurrence-text_secondary">Repeat on:</span>
       <div className="RecurrenceSelectorList">
         {days.map((item, index) => {
-          return(<SelectorButton key={index} label={item} width={"small"}/>)
+          return(<SelectorButton key={index} label={item} selected={mask[index]} width={"small"}/>)
         })}
       </div>
     </div>
   )
 }
 
-function MonthsSelector() {
+function MonthsSelector({rule, onChange}) {
+  const [mask, changeMask] = useState(rule)
   const days = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
   return(
     <div className="RecurrenceSettings">
       <span className="Recurrence-text_secondary">Repeat in:</span>
       <div className="RecurrenceSelectorList">
         {days.map((item, index) => {
-          return(<SelectorButton key={index} label={item} width={"large"}/>)
+          return(<SelectorButton key={index} label={item} selected={mask[index]} width={"large"}/>)
         })}
       </div>
     </div>
   )
 }
 
-function ReccurentExpand({type, value}) {
+function ReccurentExpand({type, value, rule, onChange}) {
   switch (type) {
     case "counter":
-      return <ItemCounter value={value} />
+      return <ItemCounter value={value} rule={rule} onChange={onChange} />
     case "selector":
-      if (value === "weekdays") {
-        return <DaysSelector />
+      if (value === "WEEKDAYS") {
+        return <DaysSelector rule={rule} onChange={onChange} />
       }
-      if (value === "months") {
-        return <MonthsSelector />
+      if (value === "MONTHS") {
+        return <MonthsSelector rule={rule} onChange={onChange} />
       }
     default: 
       return <></>
   }
 }
 
-export function DropdownButton({type, label, value, selected, onSelect}) {
+export function DropdownButton({type, label, value, selected, rule, onSelect, onChange}) {
   return(
     <div className={`RecurrenceItem${selected ? " _selected" : "" } RecurrenceItem-${type}`}>
       <button 
@@ -108,7 +111,7 @@ export function DropdownButton({type, label, value, selected, onSelect}) {
             <path d="M2 7.86304L6 11.863L14 3.86304" stroke="currentColor" strokeWidth="2"/>
           </svg>}
       </button>
-      {selected && <ReccurentExpand type={type} value={value} />}
+      {selected && <ReccurentExpand type={type} value={value} rule={rule} onChange={onChange} />}
     </div>
   )
 }
@@ -123,7 +126,7 @@ export function DropdownSubfolder({label}) {
         className="DropdownButton _size_default"
       >
         {label}
-        <svg class="Icon Dropdown-sub_menu_open_button-arrow TriangleArrowIcon" viewBox="0 -2 23 23" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{transform: "rotate(90deg)"}}><path d="M7.43408 14.6748L12.4341 9.67481L17.4341 14.6748" stroke="currentColor" stroke-width="1.8"></path></svg>
+        <svg className="Icon Dropdown-sub_menu_open_button-arrow TriangleArrowIcon" viewBox="0 -2 23 23" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{transform: "rotate(90deg)"}}><path d="M7.43408 14.6748L12.4341 9.67481L17.4341 14.6748" stroke="currentColor" strokeWidth="1.8"></path></svg>
       </button>
     </div>
   )

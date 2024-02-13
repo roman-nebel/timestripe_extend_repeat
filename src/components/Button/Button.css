@@ -1,0 +1,24 @@
+.RecurrenceItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.RecurrenceItem-selected > button {
+  background-color: transparent !important;
+  cursor: default;
+}
+
+.RecurrenceItem-selected:not(.RecurrenceItem-simple) {
+  padding-bottom: 4px;
+  border-top: 1px solid #fff3;
+  border-bottom: 1px solid #fff3;
+}
+
+.RecurrenceItem-selected:first-child {
+  border-top: none;
+}
+
+.RecurrenceItem-selected:last-child {
+  border-bottom: none;
+}

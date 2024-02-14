@@ -13,16 +13,17 @@ function SelectorButton({index, label, width, selected, onChange}) {
   )
 }
 
-function ItemCounter({value, initCounter = 1}) {
-  const [counter, setCounter] = useState(initCounter)
+function ItemCounter({rule, onChange}) {
+  const {freq, interval} = rule
+  const [counter, setCounter] = useState(interval || 1)
   let itemName = ""
-  if (value === "DAILY") {
+  if (freq === "DAILY") {
     itemName = "day"
   }
-  if (value === "WEEKLY") {
+  if (freq === "WEEKLY") {
     itemName = "week"
   }
-  if (value === "MONTHLY") {
+  if (freq === "MONTHLY") {
     itemName = "month"
   }
   if (counter > 1) {
@@ -38,6 +39,7 @@ function ItemCounter({value, initCounter = 1}) {
     if (num < 1) setCounter(1)
     else if (num > 9) setCounter(9)
     else setCounter(num)
+    onChange({...rule, interval: counter})
   }
 
   return(
@@ -95,7 +97,7 @@ function MonthsSelector({rule, onChange}) {
 function ReccurentExpand({type, value, rule, onChange}) {
   switch (type) {
     case "counter":
-      return <ItemCounter value={value} rule={rule} onChange={onChange} />
+      return <ItemCounter rule={rule} onChange={onChange} />
     case "selector":
       if (value === "WEEKDAYS") {
         return <DaysSelector rule={rule} onChange={onChange} />

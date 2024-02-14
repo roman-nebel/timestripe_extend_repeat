@@ -1,56 +1,12 @@
 import "./Modal.css"
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { DropdownButton, DropdownSubfolder } from "../Button/Button"
 import { ruleParser } from "../../utils/parsers";
+import { AppContext } from "../../Context/Context";
 
-const exampleTask = {
-  id: "recurrence:47612:2024-02-13",
-  space: "ZReLTfsC",
-  parent: null,
-  subgoals: [],
-  column: 1,
-  doneDate: "2024-02-13",
-  dueDate: "2024-02-13",
-  datetimeFr: "2024-02-12T23:39:00Z",
-  datetimeTo: "2024-02-13T00:09:00Z",
-  modifiedDatetime: "2024-02-13T20:12:16.888475+03:00",
-  name: "Example Task",
-  thoughts: "",
-  richThoughts: "{\"ops\":[{\"insert\":\"\"}]}",
-  type: null,
-  encryptionSalt: null,
-  encryptedName: null,
-  encryptedThoughts: null,
-  climbSubscription: null,
-  climbStep: null,
-  sequenceNo: 2000,
-  horizonSequenceNo: 101,
-  bucketSequenceNo: 2000,
-  subgoalSequenceNo: 2000,
-  tags: [],
-  locked: false,
-  lockedTillDatetime: null,
-  insight: null,
-  bucket: null,
-  color: null,
-  imageExpanded: true,
-  canHaveSubgoals: false,
-  canBeRecurrent: true,
-  canBeEdited: true,
-  recurrence: {
-      rule: "FREQ=MONTHLY;MASK=1F",
-      dateFr: "2024-02-13",
-      dateTo: null,
-      name: "Example Task",
-      richThoughts: "{\"ops\":[{\"insert\":\"\"}]}",
-      color: null,
-      columnId: 1
-  },
-  assignee: null
-}
-
-function RecurrencePicker({task, onUpdateTask}) {
-  const { rule } = task?.recurrence
+function RecurrencePicker() {
+  const { appState, setAppState } = useContext(AppContext);
+  const { rule } = appState?.recurrence
   const { freq, interval, mask } = ruleParser(rule)
   const [ selectedItem, setSelectedItem ] = useState(freq);
 
@@ -97,10 +53,6 @@ function RecurrencePicker({task, onUpdateTask}) {
     },
 ];
 
-  function handleSelect(value) {
-    setSelectedItem(value);
-  };
-
   function handleChange(value) {
     console.log(value)
   }
@@ -117,7 +69,7 @@ function RecurrencePicker({task, onUpdateTask}) {
           label={item.label}
           rule={mask || interval}
           selected={selectedItem === item.value}
-          onSelect={handleSelect}
+          onSelect={setSelectedItem}
           onChange={handleChange}
         />
       ))}
@@ -139,15 +91,13 @@ function RecurrencePicker({task, onUpdateTask}) {
           value={"OFF"}
           label={"Do not repeat"}
           selected={selectedItem === "OFF"}
-          onSelect={handleSelect}
+          onSelect={setSelectedItem}
         />
     </>
   )
 }
 
-export default function Modal() {
-  const [task, updateTask] = useState(exampleTask)
-
+export default function Modal({task, updateTask}) {
   return(
     <div className="theme_dark ContextMenu Dropdown Dropdown-menu Recurrence-menu _open" data-popper-reference-hidden="false" data-popper-escaped="false" data-popper-placement="right-start">
       <RecurrencePicker task={task} onUpdateTask={updateTask} />

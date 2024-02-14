@@ -1,10 +1,11 @@
 import "./Button.css"
 import { useState } from "react";
 
-function SelectorButton({label, width, selected}) {
+function SelectorButton({key, label, width, selected, onChange}) {
   const [state, updateState] = useState(selected)
 
   function clickHandler() {
+    onChange(key, state ? 1 : 0)
     updateState(!state)
   }
   return (
@@ -48,16 +49,22 @@ function ItemCounter({value, initCounter = 1}) {
   )
 }
 
-function DaysSelector({rule}) {
-  console.log(rule)
+function DaysSelector({rule, onChange}) {
   const [mask, changeMask] = useState(rule)
   const days = ["M", "T", "W", "T", "F", "S", "S"]
+
+  function changeHandler(index, value) {
+    const newMask = [...mask]
+    mask[index] = value
+    changeMask(newMask)
+    onChange(newMask)
+  }
   return(
     <div className="RecurrenceSettings">
       <span className="Recurrence-text_secondary">Repeat on:</span>
       <div className="RecurrenceSelectorList">
         {days.map((item, index) => {
-          return(<SelectorButton key={index} label={item} selected={mask[index]} width={"small"}/>)
+          return(<SelectorButton key={index} label={item} selected={mask[index]} onChange={changeHandler} width={"small"}/>)
         })}
       </div>
     </div>

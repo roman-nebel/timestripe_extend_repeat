@@ -34,15 +34,15 @@ const exampleTask = {
   canHaveSubgoals: false,
   canBeRecurrent: true,
   canBeEdited: true,
-  recurrence: {
-      rule: "FREQ=MONTHLY;MASK=8F",
-      dateFr: "2024-02-13",
-      dateTo: null,
-      name: "Example Task",
-      richThoughts: "{\"ops\":[{\"insert\":\"\"}]}",
-      color: null,
-      columnId: 1
-  },
+  //recurrence: {
+  //    rule: "FREQ=MONTHLY;MASK=8F",
+  //    dateFr: "2024-02-13",
+  //    dateTo: null,
+  //    name: "Example Task",
+  //    richThoughts: "{\"ops\":[{\"insert\":\"\"}]}",
+  //    color: null,
+  //    columnId: 1
+  //},
   assignee: null
 }
 
@@ -51,6 +51,7 @@ export const AppContext = createContext();
 export function AppProvider({ children }) {
   const [appState, setAppState] = useState(exampleTask);
 
+  console.log(appState)
   function updateTask(newValue) {
     setAppState((prevState) => ({
       ...prevState,

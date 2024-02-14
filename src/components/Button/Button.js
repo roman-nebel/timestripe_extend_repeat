@@ -5,7 +5,7 @@ function SelectorButton({index, label, width, selected, onChange}) {
   const [state, updateState] = useState(selected)
 
   function clickHandler() {
-    onChange(index, state ? 1 : 0)
+    onChange(index, !state ? 1 : 0)
     updateState(!state)
   }
   return (
@@ -50,21 +50,20 @@ function ItemCounter({value, initCounter = 1}) {
 }
 
 function DaysSelector({rule, onChange}) {
-  const [mask, changeMask] = useState([...rule])
+  const [mask, changeMask] = useState([...rule?.mask || []])
   const days = ["M", "T", "W", "T", "F", "S", "S"]
 
   function changeHandler(index, value) {
-    const newMask = [...mask]
-    newMask[index] = value
+    const newMask = days.map((item, i) => i === index ? value : mask[i] || 0)
     changeMask(newMask)
-    onChange(newMask)
+    onChange({mask: newMask})
   }
   return(
     <div className="RecurrenceSettings">
       <span className="Recurrence-text_secondary">Repeat on:</span>
       <div className="RecurrenceSelectorList">
         {days.map((item, index) => {
-          return(<SelectorButton index={index} label={item} selected={mask[index]} onChange={changeHandler} width={"small"}/>)
+          return(<SelectorButton key={index} index={index} label={item} selected={mask[index]} onChange={changeHandler} width={"small"}/>)
         })}
       </div>
     </div>
@@ -72,22 +71,21 @@ function DaysSelector({rule, onChange}) {
 }
 
 function MonthsSelector({rule, onChange}) {
-  const [mask, changeMask] = useState(rule)
-  const days = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+  const [mask, changeMask] = useState([...rule?.mask || []])
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
   function changeHandler(index, value) {
-    const newMask = [...mask]
-    newMask[index] = value
+    const newMask = months.map((item, i) => i === index ? value : mask[i] || 0)
     changeMask(newMask)
-    onChange(newMask)
+    onChange({mask: newMask})
   }
 
   return(
     <div className="RecurrenceSettings">
       <span className="Recurrence-text_secondary">Repeat in:</span>
       <div className="RecurrenceSelectorList">
-        {days.map((item, index) => {
-          return(<SelectorButton index={index} label={item} selected={mask[index]} onChange={changeHandler} width={"large"}/>)
+        {months.map((item, index) => {
+          return(<SelectorButton key={index} index={index} label={item} selected={mask[index]} onChange={changeHandler} width={"large"}/>)
         })}
       </div>
     </div>
@@ -110,14 +108,20 @@ function ReccurentExpand({type, value, rule, onChange}) {
   }
 }
 
-export function DropdownButton({type, label, value, selected, rule, onSelect, onChange}) {
+export function DropdownButton({type, label, value, selected, rule, onChange}) {
+  function selectHandler() {
+    onChange({...rule, freq: value})
+  }
+  function changeHandler(value) {
+    onChange({...rule, ...value})
+  }
   return(
     <div className={`RecurrenceItem${selected ? " _selected" : "" } RecurrenceItem-${type}`}>
       <button 
         type="button" 
         role="radio" 
         value={value} 
-        onClick={() => onSelect(value)} 
+        onClick={selectHandler} 
         className="DropdownButton _size_default"
       >
         {label}
@@ -126,7 +130,7 @@ export function DropdownButton({type, label, value, selected, rule, onSelect, on
             <path d="M2 7.86304L6 11.863L14 3.86304" stroke="currentColor" strokeWidth="2"/>
           </svg>}
       </button>
-      {selected && <ReccurentExpand type={type} value={value} rule={rule} onChange={onChange} />}
+      {selected && <ReccurentExpand type={type} value={value} rule={rule} onChange={changeHandler} />}
     </div>
   )
 }

@@ -1,14 +1,12 @@
 import "./Modal.css"
 import { useState, useContext } from "react";
 import { DropdownButton, DropdownSubfolder } from "../Button/Button"
-import { ruleParser, ruleCreator } from "../../utils/parsers";
+import { ruleParser, ruleCreator, updateRuleObject } from "../../utils/parsers";
 import { AppContext } from "../../Context/Context";
 
 function RecurrencePicker() {
-  const { appState, setAppState } = useContext(AppContext);
-  const { rule } = appState?.recurrence
-  const { freq, interval, mask } = ruleParser(rule)
-  const [ selectedItem, setSelectedItem ] = useState(freq);
+  const { appState, updateTask } = useContext(AppContext);
+  const [ selectedItem, setSelectedItem ] = useState(ruleParser(appState?.recurrence?.rule));
 
   const items = [
     {
@@ -51,10 +49,17 @@ function RecurrencePicker() {
       value: "DECADE",
       type: "simple"
     },
-];
+  ];
 
   function handleChange(value) {
-    //Rule creator
+    if (selectedItem.freq !== value.freq) {
+      updateRuleObject(value, appState)
+    }
+    setSelectedItem(value)
+    updateTask({recurrence: value.freq === "OFF" ? undefined : {
+      ...appState.recurrence,
+      rule: ruleCreator(value)
+      }})
     //POST fetch
   }
 
@@ -68,9 +73,8 @@ function RecurrencePicker() {
           type={item.type}
           value={item.value}
           label={item.label}
-          rule={mask || interval}
-          selected={selectedItem === item.value}
-          onSelect={setSelectedItem}
+          rule={selectedItem}
+          selected={selectedItem?.freq === item.value}
           onChange={handleChange}
         />
       ))}
@@ -91,8 +95,8 @@ function RecurrencePicker() {
           type={"simple"}
           value={"OFF"}
           label={"Do not repeat"}
-          selected={selectedItem === "OFF"}
-          onSelect={setSelectedItem}
+          selected={selectedItem?.freq === "OFF"}
+          onChange={handleChange}
         />
     </>
   )

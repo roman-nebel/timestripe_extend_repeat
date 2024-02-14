@@ -10,7 +10,7 @@ function hexToBinary(hexString) {
   return binaryArray;
 }
 
-function truncatedMask(mask, type) {
+export function truncatedMask(mask, type) {
   const arr = hexToBinary(mask)
   let n = 0
 
@@ -98,4 +98,26 @@ export function maskToRule(binaryArray) {
   const hexString = parseInt(binaryString, 2).toString(16).toUpperCase();
 
   return hexString;
+}
+
+export function updateRuleObject(value, appState) {
+  if (value.freq === "WEEKDAYS") {
+    const taskDate = new Date(appState.dueDate).getDay()
+    const mask = new Array(7).fill(0)
+    mask[taskDate] = 1
+    value.mask = mask
+    delete value.interval
+  } else if (value.freq === "MONTHS") {
+    const taskDate = new Date(appState.dueDate).getMonth()
+    const mask = new Array(12).fill(0)
+    mask[taskDate] = 1
+    value.mask = mask
+    delete value.interval
+  } else if (value.freq === "OFF") {
+    delete value.interval
+    delete value.mask
+  } else {
+    value.interval = 1
+    delete value.mask
+  }
 }

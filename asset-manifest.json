@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/static/css/main.8cc64389.css",
-    "main.js": "/static/js/main.819af9c6.js",
-    "index.html": "/index.html",
-    "main.8cc64389.css.map": "/static/css/main.8cc64389.css.map",
-    "main.819af9c6.js.map": "/static/js/main.819af9c6.js.map"
+    "main.css": "/timestripe_extend_repeat/static/css/main.8cc64389.css",
+    "main.js": "/timestripe_extend_repeat/static/js/main.819af9c6.js",
+    "index.html": "/timestripe_extend_repeat/index.html",
+    "main.8cc64389.css.map": "/timestripe_extend_repeat/static/css/main.8cc64389.css.map",
+    "main.819af9c6.js.map": "/timestripe_extend_repeat/static/js/main.819af9c6.js.map"
   },
   "entrypoints": [
     "static/css/main.8cc64389.css",

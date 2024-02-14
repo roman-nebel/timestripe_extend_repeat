@@ -1,11 +1,11 @@
 import "./Button.css"
 import { useState } from "react";
 
-function SelectorButton({key, label, width, selected, onChange}) {
+function SelectorButton({index, label, width, selected, onChange}) {
   const [state, updateState] = useState(selected)
 
   function clickHandler() {
-    onChange(key, state ? 1 : 0)
+    onChange(index, state ? 1 : 0)
     updateState(!state)
   }
   return (
@@ -16,13 +16,13 @@ function SelectorButton({key, label, width, selected, onChange}) {
 function ItemCounter({value, initCounter = 1}) {
   const [counter, setCounter] = useState(initCounter)
   let itemName = ""
-  if (value === "daily") {
+  if (value === "DAILY") {
     itemName = "day"
   }
-  if (value === "weekly") {
+  if (value === "WEEKLY") {
     itemName = "week"
   }
-  if (value === "monthly") {
+  if (value === "MONTHLY") {
     itemName = "month"
   }
   if (counter > 1) {
@@ -50,12 +50,12 @@ function ItemCounter({value, initCounter = 1}) {
 }
 
 function DaysSelector({rule, onChange}) {
-  const [mask, changeMask] = useState(rule)
+  const [mask, changeMask] = useState([...rule])
   const days = ["M", "T", "W", "T", "F", "S", "S"]
 
   function changeHandler(index, value) {
     const newMask = [...mask]
-    mask[index] = value
+    newMask[index] = value
     changeMask(newMask)
     onChange(newMask)
   }
@@ -64,7 +64,7 @@ function DaysSelector({rule, onChange}) {
       <span className="Recurrence-text_secondary">Repeat on:</span>
       <div className="RecurrenceSelectorList">
         {days.map((item, index) => {
-          return(<SelectorButton key={index} label={item} selected={mask[index]} onChange={changeHandler} width={"small"}/>)
+          return(<SelectorButton index={index} label={item} selected={mask[index]} onChange={changeHandler} width={"small"}/>)
         })}
       </div>
     </div>
@@ -74,12 +74,20 @@ function DaysSelector({rule, onChange}) {
 function MonthsSelector({rule, onChange}) {
   const [mask, changeMask] = useState(rule)
   const days = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+  function changeHandler(index, value) {
+    const newMask = [...mask]
+    newMask[index] = value
+    changeMask(newMask)
+    onChange(newMask)
+  }
+
   return(
     <div className="RecurrenceSettings">
       <span className="Recurrence-text_secondary">Repeat in:</span>
       <div className="RecurrenceSelectorList">
         {days.map((item, index) => {
-          return(<SelectorButton key={index} label={item} selected={mask[index]} width={"large"}/>)
+          return(<SelectorButton index={index} label={item} selected={mask[index]} onChange={changeHandler} width={"large"}/>)
         })}
       </div>
     </div>

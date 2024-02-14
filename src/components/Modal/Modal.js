@@ -1,7 +1,7 @@
 import "./Modal.css"
 import { useState, useContext } from "react";
 import { DropdownButton, DropdownSubfolder } from "../Button/Button"
-import { ruleParser } from "../../utils/parsers";
+import { ruleParser, ruleCreator } from "../../utils/parsers";
 import { AppContext } from "../../Context/Context";
 
 function RecurrencePicker() {
@@ -54,7 +54,8 @@ function RecurrencePicker() {
 ];
 
   function handleChange(value) {
-    console.log(value)
+    //Rule creator
+    //POST fetch
   }
 
   return(

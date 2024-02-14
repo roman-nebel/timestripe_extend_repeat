@@ -13,15 +13,33 @@ function hexToBinary(hexString) {
 function truncatedMask(mask, type) {
   const arr = hexToBinary(mask)
   let n = 0
+
   if (type === "DAILY") n = 7
   if (type === "MONTHLY") n = 12
-  {
-    if (n >= arr.length) {
-      return arr;
+
+  if (n >= arr.length) {
+    const shiftedArray = new Array(n - arr.length).fill(0)
+    return [...shiftedArray, ...arr];
+  }
+
+  const truncatedArray = arr.slice(arr.length - n);
+  return truncatedArray;
+}
+
+export function ruleCreator(ruleObject) {
+  try {
+    let ruleString = `FREQ=${ruleObject.freq}`
+
+    if (ruleObject.interval) {
+      ruleString += `;INTERVAL=${ruleObject.interval}`
     }
-  
-    const truncatedArray = arr.slice(arr.length - n);
-    return truncatedArray;
+
+    if (ruleObject.mask) {
+      ruleString += `;MASK=${maskToRule(ruleObject.mask)}`
+    }
+    return ruleString
+  } catch (e) {
+    console.error("Error in ruleCreator!", e);
   }
 }
 
@@ -68,4 +86,16 @@ export function ruleParser(rule) {
       freq: "OFF"
     }
   }
+}
+
+export function maskToRule(binaryArray) {
+  if (!binaryArray.every(bit => bit === 0 || bit === 1)) {
+    throw new Error('Only 1 and 0 must be in the mask array!');
+  }
+
+  const binaryString = binaryArray.join('');
+
+  const hexString = parseInt(binaryString, 2).toString(16).toUpperCase();
+
+  return hexString;
 }

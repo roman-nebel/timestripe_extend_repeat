@@ -35,7 +35,7 @@ const exampleTask = {
   canBeRecurrent: true,
   canBeEdited: true,
   recurrence: {
-      rule: "FREQ=DAILY;MASK=24",
+      rule: "FREQ=MONTHLY;MASK=8F",
       dateFr: "2024-02-13",
       dateTo: null,
       name: "Example Task",

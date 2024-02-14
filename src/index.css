@@ -1,3 +1,21 @@
 body {
   margin: 24px;
 }
+
+.demo {
+  position: relative !important;
+}
+
+.App {
+  display: flex;
+  gap: 36px;
+  align-items: flex-start;
+}
+
+.previewContainer {
+  font-family: monospace;
+  font-size: 16px;
+  padding: 8px 12px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+}

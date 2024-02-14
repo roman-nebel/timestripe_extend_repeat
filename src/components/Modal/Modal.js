@@ -104,7 +104,7 @@ function RecurrencePicker() {
 
 export default function Modal({task, updateTask}) {
   return(
-    <div className="theme_dark ContextMenu Dropdown Dropdown-menu Recurrence-menu _open" data-popper-reference-hidden="false" data-popper-escaped="false" data-popper-placement="right-start">
+    <div className="demo theme_dark ContextMenu Dropdown Dropdown-menu Recurrence-menu _open" data-popper-reference-hidden="false" data-popper-escaped="false" data-popper-placement="right-start">
       <RecurrencePicker task={task} onUpdateTask={updateTask} />
     </div>
   )
